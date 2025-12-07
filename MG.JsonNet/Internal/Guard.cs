@@ -8,6 +8,7 @@
 /// This <see langword="static"/> class acts as a safeguard, throwing exceptions when preconditions for method 
 /// arguments are not met.
 /// </remarks>
+[DebuggerStepThrough]
 internal static partial class Guard
 {
     /// <summary>
@@ -18,9 +19,7 @@ internal static partial class Guard
     /// <param name="instance">The instance of the object being checked.</param>
     /// <param name="objectName">The optional name of the object being checked.</param>
     /// <exception cref="ObjectDisposedException">Thrown if the object is determined to be disposed.</exception>
-#if NETCOREAPP
     [StackTraceHidden]
-#endif
     public static void ThrowIfDisposed<T>([DoesNotReturnIf(true)] bool disposed, T instance, string? objectName = null) where T : notnull
     {
 #if NET7_0_OR_GREATER
@@ -65,9 +64,7 @@ internal static partial class Guard
     /// <param name="value">The object to check for nullity.</param>
     /// <param name="paramName">The optional name of the parameter that holds the value.</param>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-#if NETCOREAPP
     [StackTraceHidden]
-#endif
     public static void ThrowIfNull([NotNull] object? value,
         [CallerArgumentExpression(nameof(value))]
         string? paramName = null
@@ -91,13 +88,13 @@ internal static partial class Guard
     /// <param name="paramName"></param>
     /// <exception cref="ArgumentException"><paramref name="value"/> is empty.</exception>
     /// <inheritdoc cref="ThrowIfNull(object, string)" path="/exception"/>
+    [StackTraceHidden]
     public static void ThrowIfNullOrEmpty([NotNull] string? value,
         [CallerArgumentExpression(nameof(value))]
         string? paramName = null)
     {
 #if NET7_0_OR_GREATER
             ArgumentException.ThrowIfNullOrEmpty(value, paramName);
-            return;
 #else
         ThrowIfNull(value, paramName);
         if (string.Empty == value)
@@ -116,13 +113,13 @@ internal static partial class Guard
     /// <param name="paramName">The optional name of the parameter that holds the value.</param>
     /// <exception cref="ArgumentException">Thrown if the string is null, empty, or only white space.</exception>
     /// <inheritdoc cref="ThrowIfNull(object, string)" path="/exception"/>
+    [StackTraceHidden]
     public static void ThrowIfNullOrWhitespace([NotNull] string? value,
         [CallerArgumentExpression(nameof(value))]
         string? paramName = null)
     {
 #if NET8_0_OR_GREATER
             ArgumentException.ThrowIfNullOrWhiteSpace(value, paramName);
-            return;
 #else
         ThrowIfNullOrEmpty(value, paramName);
         for (int i = 0; i < value.Length; i++)
@@ -138,9 +135,7 @@ internal static partial class Guard
 #endif
     }
 
-#if NETCOREAPP
     [StackTraceHidden]
-#endif
     private static void GetTypeNames<T>(object? value, out string typeName, out string objTypeName)
     {
         Type t = typeof(T);

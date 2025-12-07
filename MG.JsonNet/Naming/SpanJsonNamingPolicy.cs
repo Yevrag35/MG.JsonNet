@@ -1,7 +1,5 @@
 ﻿namespace MG.JsonNet.Naming;
 
-#nullable enable
-
 /// <summary>
 /// A naming policy that converts property names to a specific standard.
 /// </summary>

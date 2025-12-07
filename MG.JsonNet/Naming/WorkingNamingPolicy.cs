@@ -3,8 +3,6 @@ using MG.JsonNet.Internal.Buffers;
 
 namespace MG.JsonNet.Naming;
 
-#nullable enable
-
 /// <summary>
 /// Encapsulates a JSON naming policy along with its associated serializer options to efficiently convert
 /// property names during JSON serialization.

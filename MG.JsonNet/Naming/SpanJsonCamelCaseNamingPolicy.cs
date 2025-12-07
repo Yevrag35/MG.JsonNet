@@ -1,8 +1,4 @@
-﻿using System.Buffers;
-
-namespace MG.JsonNet.Naming;
-
-#nullable enable
+﻿namespace MG.JsonNet.Naming;
 
 internal sealed class SpanJsonCamelCaseNamingPolicy : SpanJsonNamingPolicy
 {
