@@ -48,9 +48,16 @@ public static partial class Utf8WriterExtensions
 		writer.WriteEndObject();
 	}
 
+    /// <summary>
+    /// Extracts the property name segment following the last period (<c>.</c>) in the specified span.
+    /// </summary>
+    /// <remarks>This method does not allocate new strings and operates directly on the provided span.</remarks>
+    /// <param name="propertyName">A read-only span of characters containing the property name, which may include one or more divider characters.</param>
+    /// <returns>A read-only span of characters representing the substring after the last period, or the original span
+    /// if no divider is found.</returns>
     private static ReadOnlySpan<char> FormatPropertyName(ReadOnlySpan<char> propertyName)
     {
-		if (propertyName.TryLastIndexOf(DIVIDER, out int index))
+		if (propertyName.TryLastIndexOf(DIVIDER, out int index) && index < propertyName.Length - 1)
 		{
 			propertyName = propertyName.Slice(index + 1);
         }

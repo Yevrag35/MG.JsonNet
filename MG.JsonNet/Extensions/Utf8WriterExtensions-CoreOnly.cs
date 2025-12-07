@@ -10,8 +10,16 @@ namespace MG.JsonNet.Extensions;
 public static partial class Utf8WriterExtensions
 {
     /// <summary>
-	/// Writes a formattable property name and its associated value to the specified <see cref="Utf8JsonWriter"/> using the provided naming policy.
+	/// Writes a property name and its associated value of <typeparamref name="T"/> that implements <see cref="ISpanFormattable"/> 
+	/// to the specified <see cref="Utf8JsonWriter"/> using the provided naming policy.
 	/// </summary>
+	/// <param name="writer">The JSON writer to which the value is written.</param>
+	/// <param name="policy">The <see cref="WorkingNamingPolicy"/> that determines how the property name is formatted and written. Cannot be null.</param>
+	/// <param name="value">The formattable value to write as the property's value.</param>
+	/// <param name="format">The format to apply to the value. If not specified, the default format is used.</param>
+	/// <param name="maxLength">The maximum UTF-16 character length the formatted value can be.</param>
+	/// <param name="provider">An optional format provider to use when formatting the value.</param>
+	/// <param name="propertyName">The name of the property to write. Captures the argument expression for <paramref name="value"/> if not specified.</param>
     /// <exception cref="ArgumentNullException"><paramref name="policy"/> is null.</exception>
     /// <exception cref="FormatException"><paramref name="format"/> is invalid.</exception>
 	/// <inheritdoc cref="WorkingNamingPolicy.WritePropertyName(Utf8JsonWriter, ReadOnlySpan{char})" path="/exception"/>
