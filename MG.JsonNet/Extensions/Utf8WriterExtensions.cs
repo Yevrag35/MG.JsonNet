@@ -3,7 +3,7 @@
 namespace MG.JsonNet.Extensions;
 
 /// <summary>
-/// Provides a set of extension methods for writing to <see cref="Utf8JsonWriter"/> instances.
+/// Provides extension methods for writing to <see cref="Utf8JsonWriter"/> instances.
 /// </summary>
 public static partial class Utf8WriterExtensions
 {

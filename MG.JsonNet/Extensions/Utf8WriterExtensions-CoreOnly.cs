@@ -2,6 +2,7 @@
 using MG.JsonNet.Internal;
 using MG.JsonNet.Internal.Buffers;
 using MG.JsonNet.Naming;
+using System.Numerics;
 
 namespace MG.JsonNet.Extensions;
 
@@ -58,5 +59,39 @@ public static partial class Utf8WriterExtensions
 			Rent.Return(array);
 		}
 	}
+
+	public static void WriteNumber<T>(this Utf8JsonWriter writer,
+		WorkingNamingPolicy policy,
+		T value,
+		[CallerArgumentExpression(nameof(value))] string propertyName = "")
+			where T : unmanaged, INumber<T>
+    {
+		Guard.ThrowIfNull(policy);
+
+        ReadOnlySpan<char> propName = FormatPropertyName(propertyName);
+        policy.WritePropertyName(writer, propName);
+
+		WriteNumericValue(writer, value);
+    }
+
+	private static void WriteNumericValue<T>(Utf8JsonWriter writer, T value) where T : unmanaged, INumber<T>
+	{
+		bool isNegative = T.IsNegative(value);
+        if (T.IsInteger(value))
+        {
+            if (isNegative)
+			{
+				writer.WriteNumberValue(long.CreateSaturating(value));
+			}
+			else
+			{
+				writer.WriteNumberValue(ulong.CreateSaturating(value));
+            }
+        }
+		else
+		{
+			writer.WriteNumberValue(double.CreateSaturating(value));
+        }
+    }
 }
 #endif
