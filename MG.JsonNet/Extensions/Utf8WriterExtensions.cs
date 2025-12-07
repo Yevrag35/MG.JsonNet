@@ -18,36 +18,34 @@ public static partial class Utf8WriterExtensions
     /// in succession.
     /// </remarks>
     /// <param name="writer">The JSON writer to write the empty array to.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
+    /// <inheritdoc cref="Utf8JsonWriter.WriteStartArray" path="/exception"/>
+    /// <inheritdoc cref="Utf8JsonWriter.WriteEndArray" path="/exception"/>
     public static void WriteEmptyArray(this Utf8JsonWriter writer)
 	{
-		writer.WriteStartArray();
+		Guard.ThrowIfNull(writer);
+
+        writer.WriteStartArray();
 		writer.WriteEndArray();
 	}
 
-	/// <summary>
-	/// Writes an empty object to the JSON writer.
-	/// </summary>
-	/// <remarks>
-	/// Equivalent to calling <see cref="Utf8JsonWriter.WriteStartObject"/> and <see cref="Utf8JsonWriter.WriteEndObject"/>
-	/// in succession.
-	/// </remarks>
-	/// <param name="writer">The JSON writer to write the empty object to.</param>
-	public static void WriteEmptyObject(this Utf8JsonWriter writer)
+    /// <summary>
+    /// Writes an empty object to the JSON writer.
+    /// </summary>
+    /// <remarks>
+    /// Equivalent to calling <see cref="Utf8JsonWriter.WriteStartObject"/> and <see cref="Utf8JsonWriter.WriteEndObject"/>
+    /// in succession.
+    /// </remarks>
+    /// <param name="writer">The JSON writer to write the empty object to.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
+    /// <inheritdoc cref="Utf8JsonWriter.WriteStartObject" path="/exception"/>
+    /// <inheritdoc cref="Utf8JsonWriter.WriteEndObject" path="/exception"/>
+    public static void WriteEmptyObject(this Utf8JsonWriter writer)
 	{
-		writer.WriteStartObject();
-		writer.WriteEndObject();
-	}
+        Guard.ThrowIfNull(writer);
 
-	private static string GetPropertyName(string? propertyName)
-	{
-#if NETCOREAPP
-		Debug.Assert(!string.IsNullOrEmpty(propertyName), "The property name should have been provided by the caller.");
-		return propertyName!;
-#else
-		Guard.ThrowIfNullOrWhitespace(propertyName, nameof(propertyName));
-		//ArgumentException.ThrowIfNullOrWhiteSpace(propertyName);
-        return propertyName;
-#endif
+        writer.WriteStartObject();
+		writer.WriteEndObject();
 	}
 
     private static ReadOnlySpan<char> FormatPropertyName(ReadOnlySpan<char> propertyName)

@@ -206,13 +206,17 @@ public sealed class WorkingNamingPolicy : JsonNamingPolicy
 		writer.WritePropertyName(propertyName);
 	}
 
-	/// <summary>
-	/// Writes the property name to the specified <see cref="Utf8JsonWriter"/>.
-	/// </summary>
-	/// <param name="writer">The JSON writer.</param>
-	/// <param name="propertyNameSpan">The property name as a read-only span of characters.</param>
-	public void WritePropertyName(Utf8JsonWriter writer, ReadOnlySpan<char> propertyNameSpan)
+    /// <summary>
+    /// Writes the property name to the specified <see cref="Utf8JsonWriter"/>.
+    /// </summary>
+    /// <param name="writer">The JSON writer.</param>
+    /// <param name="propertyNameSpan">The property name as a read-only span of characters.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
+    /// <inheritdoc cref="Utf8JsonWriter.WritePropertyName(ReadOnlySpan{char})" path="/exception"/>
+    public void WritePropertyName(Utf8JsonWriter writer, ReadOnlySpan<char> propertyNameSpan)
 	{
+		Guard.ThrowIfNull(writer);
+
 		if (this.HasPolicy)
 		{
 			if (this.IsSpanPolicy)
@@ -233,6 +237,7 @@ public sealed class WorkingNamingPolicy : JsonNamingPolicy
 	/// </summary>
 	/// <param name="writer">The JSON writer.</param>
 	/// <param name="propertyName">The property name as a read-only span of bytes.</param>
+	/// <inheritdoc cref="Utf8JsonWriter.WritePropertyName(ReadOnlySpan{char})" path="/exception"/>
 	public void WritePropertyName(Utf8JsonWriter writer, ReadOnlySpan<byte> propertyName)
 	{
 		if (!this.HasPolicy)
@@ -266,6 +271,16 @@ public sealed class WorkingNamingPolicy : JsonNamingPolicy
         }
 	}
 
+    /// <summary>
+	/// Writes a JSON property name to the specified writer, applying the given naming policy to the property name bytes.
+	/// </summary>
+	/// <remarks>The property name is transformed using the provided naming policy before being written. The method
+	/// expects the property name to be valid UTF-8 and does not perform validation. This method does not write any
+	/// property value; only the property name is affected.</remarks>
+	/// <param name="writer">The writer to which the property name will be written. Must not be null.</param>
+	/// <param name="propertyName">The property name as a read-only span of UTF-8 encoded bytes to be written.</param>
+	/// <param name="policy">The naming policy to apply when converting the property name before writing.</param>
+	/// <inheritdoc cref="Utf8JsonWriter.WritePropertyName(ReadOnlySpan{byte})" path="/exception"/>
     internal static void WritePropertyName(Utf8JsonWriter writer, ReadOnlySpan<byte> propertyName, SpanJsonNamingPolicy policy)
     {
         byte[]? array = null;
@@ -290,6 +305,7 @@ public sealed class WorkingNamingPolicy : JsonNamingPolicy
     /// <param name="writer">The JSON writer.</param>
     /// <param name="spanPolicy">The span policy.</param>
     /// <param name="propertyName">The property name as a read-only span of characters.</param>
+	/// <inheritdoc cref="Utf8JsonWriter.WritePropertyName(ReadOnlySpan{char})" path="/exception"/>
     internal static void WriteCharSpan(Utf8JsonWriter writer, SpanJsonNamingPolicy spanPolicy, ReadOnlySpan<char> propertyName)
 	{
         char[]? array = null;
