@@ -192,6 +192,7 @@ public sealed class WorkingNamingPolicy : JsonNamingPolicy
 	/// <param name="propertyName">The property name.</param>
 	public void WritePropertyName(Utf8JsonWriter writer, string propertyName)
 	{
+		//ArgumentException.ThrowIfNullOrWhiteSpace(propertyName);
 		Guard.ThrowIfNullOrWhitespace(propertyName, nameof(propertyName));
 		if (this.HasPolicy)
 		{

@@ -65,6 +65,8 @@ public readonly ref struct JsonNamingPolicyOverride
 	/// applied and the original policy is ignored.</param>
 	internal JsonNamingPolicyOverride(WorkingNamingPolicy policy, bool @override)
 	{
+		Guard.ThrowIfNull(policy);
+		//ArgumentNullException.ThrowIfNull(policy);
 		this.Options = policy.Options;
 		policy.SetOverride(ref _spanPolicy);
 		this.HasPolicy = !@override && policy.HasPolicy;
@@ -178,7 +180,8 @@ public readonly ref struct JsonNamingPolicyOverride
 	public readonly void WritePropertyName(Utf8JsonWriter writer, string propertyName)
 	{
 		Guard.ThrowIfNullOrEmpty(propertyName, nameof(propertyName));
-		if (this.HasPolicy)
+		//ArgumentException.ThrowIfNullOrEmpty(propertyName);
+        if (this.HasPolicy)
 		{
 			if (this.IsSpanPolicy)
 			{

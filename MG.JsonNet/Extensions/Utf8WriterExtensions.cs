@@ -45,7 +45,8 @@ public static partial class Utf8WriterExtensions
 		return propertyName!;
 #else
 		Guard.ThrowIfNullOrWhitespace(propertyName, nameof(propertyName));
-		return propertyName;
+		//ArgumentException.ThrowIfNullOrWhiteSpace(propertyName);
+        return propertyName;
 #endif
 	}
 

@@ -18,6 +18,9 @@ internal static partial class Guard
     /// <param name="instance">The instance of the object being checked.</param>
     /// <param name="objectName">The optional name of the object being checked.</param>
     /// <exception cref="ObjectDisposedException">Thrown if the object is determined to be disposed.</exception>
+#if NETCOREAPP
+    [StackTraceHidden]
+#endif
     public static void ThrowIfDisposed<T>([DoesNotReturnIf(true)] bool disposed, T instance, string? objectName = null) where T : notnull
     {
 #if NET7_0_OR_GREATER
@@ -41,9 +44,7 @@ internal static partial class Guard
     /// <exception cref="ArgumentException">Thrown if the value is not of the expected type.</exception>
     [return: NotNull]
     public static T ThrowIfNotType<T>([NotNull] object? value,
-#if NET6_0_OR_GREATER
-            [CallerArgumentExpression(nameof(value))]
-#endif
+        [CallerArgumentExpression(nameof(value))]
         string? paramName = null)
     {
 		if (value is not T tVal)
@@ -68,13 +69,11 @@ internal static partial class Guard
     [StackTraceHidden]
 #endif
     public static void ThrowIfNull([NotNull] object? value,
-#if NET6_0_OR_GREATER
-            [CallerArgumentExpression(nameof(value))]
-#endif
-    string? paramName = null
+        [CallerArgumentExpression(nameof(value))]
+        string? paramName = null
     )
     {
-#if NET6_0_OR_GREATER
+#if NETCOREAPP
             ArgumentNullException.ThrowIfNull(value, paramName);
 #else
         if (value is null)
@@ -93,9 +92,7 @@ internal static partial class Guard
     /// <exception cref="ArgumentException"><paramref name="value"/> is empty.</exception>
     /// <inheritdoc cref="ThrowIfNull(object, string)" path="/exception"/>
     public static void ThrowIfNullOrEmpty([NotNull] string? value,
-#if NET6_0_OR_GREATER
-            [CallerArgumentExpression(nameof(value))]
-#endif
+        [CallerArgumentExpression(nameof(value))]
         string? paramName = null)
     {
 #if NET7_0_OR_GREATER
@@ -120,9 +117,7 @@ internal static partial class Guard
     /// <exception cref="ArgumentException">Thrown if the string is null, empty, or only white space.</exception>
     /// <inheritdoc cref="ThrowIfNull(object, string)" path="/exception"/>
     public static void ThrowIfNullOrWhitespace([NotNull] string? value,
-#if NET6_0_OR_GREATER
-            [CallerArgumentExpression(nameof(value))]
-#endif
+        [CallerArgumentExpression(nameof(value))]
         string? paramName = null)
     {
 #if NET8_0_OR_GREATER
